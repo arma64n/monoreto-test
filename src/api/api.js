@@ -7,9 +7,17 @@ export function getItems (tag) {
 }
 
 export function getQuestion (id) {
-  return axios.get(`/questions/${id}?site=${site}`)
+  return axios.get(`/questions/${id}?site=${site}&filter=withbody`)
 }
 
 export function getAnswers (id) {
   return axios.get(`/questions/${id}/answers?site=${site}`)
+}
+
+export function getAuthorLastFive (id) {
+  return axios.get(`/users/${id}/questions?site=${site}`)
+}
+
+export function getTagLastFive (tag) {
+  return axios.get(`/questions?site=${site}&tagged=${tag}`)
 }

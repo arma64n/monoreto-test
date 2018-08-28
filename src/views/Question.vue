@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Question: {{question.title}}</h1>
     {{question}}
   </div>
 </template>
