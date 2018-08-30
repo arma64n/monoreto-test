@@ -18,42 +18,49 @@
           </div>
           <div class="media-content">
             <p class="title is-4" @click="showAuthorQuestions(item)">{{item.owner.display_name}}</p>
-            <!-- <p class="subtitle is-6">Answers: {{item.answer_count}}</p> -->
           </div>
         </div>
 
         <div class="content">
-          <p @click="goToQuestion(item.question_id)">{{item.title}}</p>
-          (Answers: {{item.answer_count}})
-          <br>
-          <a href="#" v-for="tag in item.tags" :key="tag" @click="showTagQuestions(tag)"> #{{tag}} </a>
+          <p class="title is-6" @click="goToQuestion(item.question_id)">{{item.title}}</p>
+          <p @click="goToAnswers(item.question_id)">Answers: {{item.answer_count}}</p>
+          <div class="field is-grouped is-grouped-multiline">
+            <div class="control" v-for="tag in item.tags" :key="tag" >
+              <span class="tag is-primary" @click="showTagQuestions(tag)"> #{{tag}} </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="aside" v-show="lastFiveShow">
-      <div class="card" v-for="item in lastFive" :key="item.question_id">
-        <div class="card-content">
-          <div class="media">
-            <div class="media-left">
-              <figure class="image is-48x48">
-                <img :src="item.owner.profile_image" alt="Placeholder image">
-              </figure>
+    <transition name="slide">
+      <div class="aside" v-show="lastFiveShow">
+        <div class="card" v-for="item in lastFive" :key="item.question_id">
+          <div class="card-content">
+            <div class="media">
+              <div class="media-left">
+                <figure class="image is-48x48">
+                  <img :src="item.owner.profile_image" alt="Placeholder image">
+                </figure>
+              </div>
+              <div class="media-content">
+                <p class="title is-4">{{item.owner.display_name}}</p>
+                <!-- <p class="subtitle is-6">Answers: {{item.answer_count}}</p> -->
+              </div>
             </div>
-            <div class="media-content">
-              <p class="title is-4">{{item.owner.display_name}}</p>
-              <!-- <p class="subtitle is-6">Answers: {{item.answer_count}}</p> -->
-            </div>
-          </div>
 
-          <div class="content">
-            <p @click="goToQuestion(item.question_id)">{{item.title}}</p>
-            (Answers: {{item.answer_count}})
-            <br>
-            <a href="#" v-for="tag in item.tags" :key="tag"> #{{tag}} </a>
+            <div class="content">
+              <p class="title is-6" @click="goToQuestion(item.question_id)">{{item.title}}</p>
+              <p @click="goToAnswers(item.question_id)">Answers: {{item.answer_count}}</p>
+              <div class="field is-grouped is-grouped-multiline">
+                <div class="control" v-for="tag in item.tags" :key="tag" >
+                  <span class="tag is-primary" @click="showTagQuestions(tag)"> #{{tag}} </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -79,6 +86,11 @@ export default {
       await this.loadAnswers({id: x})
       this.$router.push({name: 'question'})
     },
+    async goToAnswers (x) {
+      await this.loadQuestion({id: x})
+      await this.loadAnswers({id: x})
+      this.$router.push({name: 'question', hash: '#answers'})
+    },
     async showAuthorQuestions (item) {
       await this.loadAuthorLastFive({id: item.owner.user_id})
       this.lastFiveShow = true
@@ -103,18 +115,30 @@ export default {
 
 <style lang="scss" scoped>
 .card:focus {
-  background: gray;
+  background: #dadada;
   outline: none;
 }
 
 .aside {
   position: fixed;
-  background: red;
+  background: #bebebe;
   top: 0;
   width: 50vw;
   left: 50%;
-  padding: 1em;
+  padding: 10px;
   height: 100vh;
   overflow-y: auto;
+  z-index: 50;
+}
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: 0.5s;
+}
+.slide-enter {
+  transform: translate(100%, 0);
+}
+.slide-leave-to {
+  transform: translate(100%, 0);
 }
 </style>

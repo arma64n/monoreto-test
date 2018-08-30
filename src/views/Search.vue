@@ -1,8 +1,15 @@
 <template>
   <div>
-    Search page
-    <input type="text" v-model="tag">
-    <button type="button" @click="initSearch">Search</button>
+    <div class="field has-addons">
+      <div class="control">
+        <input class="input" type="text" placeholder="Type a question" v-model="tag">
+      </div>
+      <div class="control" @click="initSearch">
+        <a class="button is-primary">
+          Search
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,7 +26,7 @@ export default {
   methods: {
     ...mapActions(['loadItems']),
     async initSearch() {
-      await this.loadItems(this.tag)
+      await this.loadItems({tag: this.tag})
       this.$router.push({name: 'result'})
     }
   }

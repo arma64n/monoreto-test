@@ -40,7 +40,7 @@ export default new Vuex.Store({
     },
     async loadAnswers ({ commit }, { id }) {
       const response = await api.getAnswers(id)
-      commit('SAVE ANSWERS', response.data)
+      commit('SAVE ANSWERS', response.data.items)
     },
     async loadAuthorLastFive ({ commit }, { id }) {
       const response = await api.getAuthorLastFive(id)

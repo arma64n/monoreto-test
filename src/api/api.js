@@ -3,7 +3,7 @@ import axios from '@/config/axios'
 const site = 'stackoverflow'
 
 export function getItems (tag) {
-  return axios.get(`/search?key=U4DMV*8nvpm3EOpvf69Rxw((&site=${site}&order=desc&sort=activity&tagged=${tag}&filter=default`)
+  return axios.get(`/search?site=${site}&order=desc&sort=activity&intitle=${tag}`)
 }
 
 export function getQuestion (id) {
@@ -11,7 +11,7 @@ export function getQuestion (id) {
 }
 
 export function getAnswers (id) {
-  return axios.get(`/questions/${id}/answers?site=${site}`)
+  return axios.get(`/questions/${id}/answers?site=${site}&filter=withbody`)
 }
 
 export function getAuthorLastFive (id) {
